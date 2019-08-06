@@ -1,7 +1,7 @@
 # Личный проект «Менеджер задач» [![Build status][travis-image]][travis-url]
 
 * Студент: [Екатерина Еремина](https://up.htmlacademy.ru/ecmascript/9/user/527865).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег Акинин](https://htmlacademy.ru/profile/id372677).
 
 ---
 
