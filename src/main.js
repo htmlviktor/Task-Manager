@@ -1,35 +1,12 @@
 getMenuTemplate = () => {
-  return `<section class="main__control control container">
-        <h1 class="control__title">TASKMANAGER</h1>
-        <section class="control__btn-wrap">
-          <input
-            type="radio"
-            name="control"
-            id="control__new-task"
-            class="control__input visually-hidden"
-          />
-          <label for="control__new-task" class="control__label control__label--new-task"
-            >+ ADD NEW TASK</label
-          >
-          <input
-            type="radio"
-            name="control"
-            id="control__task"
-            class="control__input visually-hidden"
-            checked
-          />
+  return `<section class="control__btn-wrap">
+          <input type="radio" name="control" id="control__new-task" class="control__input visually-hidden">
+          <label for="control__new-task" class="control__label control__label--new-task">+ ADD NEW TASK</label>
+          <input type="radio" name="control" id="control__task" class="control__input visually-hidden" checked="">
           <label for="control__task" class="control__label">TASKS</label>
-          <input
-            type="radio"
-            name="control"
-            id="control__statistic"
-            class="control__input visually-hidden"
-          />
-          <label for="control__statistic" class="control__label"
-            >STATISTICS</label
-          >
-        </section>
-      </section>`
+          <input type="radio" name="control" id="control__statistic" class="control__input visually-hidden">
+          <label for="control__statistic" class="control__label">STATISTICS</label>
+        </section>`
 };
 const getSearchTemplate = () => {
   return `<section class="main__search search container">
@@ -450,6 +427,42 @@ const getCardEditFormTemplate = () => {
             </form>
           </article>`
 };
+
+const getBoardContainer = () => {
+  return `<section class="board container">
+        <div class="board__filter-list">
+        </div>
+        <div class="board__tasks">          
+        </div>
+      </section>`
+};
+
 const getLoadMoreButtonTemplate = () => {
   return `<button class="load-more" type="button">load more</button>`;
 }
+
+//This is renders function component
+const renderComponent = (container, layout) => {
+  container.insertAdjacentHTML('beforeend', layout);
+}
+
+const mainContainer = document.querySelector('.main');
+const mainControlContainer = mainContainer.querySelector('.main__control');
+
+renderComponent(mainControlContainer, getMenuTemplate());
+renderComponent(mainContainer, getSearchTemplate());
+renderComponent(mainContainer, getFiltersTemplate());
+renderComponent(mainContainer, getBoardContainer());
+
+const renderCards = () => {
+  const boardTasksContainer = mainContainer.querySelector('.board__tasks');
+  renderComponent(boardTasksContainer, getCardEditFormTemplate());
+
+  for (let i = 0; i < 3; i++) {
+    renderComponent(boardTasksContainer, getCardTemplate());
+  }
+}
+
+renderCards();
+
+
