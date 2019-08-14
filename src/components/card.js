@@ -1,5 +1,6 @@
-export const getCardTemplate = () => {
-  return `<article class="card card--black">
+export const getCardTemplate = ({color, tags, repeatingDays, description, dueDate}) => {
+  return `<article class="card card--${color} ${Object.keys(repeatingDays)
+    .some(day => repeatingDays[day]) ? `card--repeat` : ``}">
             <div class="card__form">
               <div class="card__inner">
                 <div class="card__control">
@@ -24,7 +25,7 @@ export const getCardTemplate = () => {
                 </div>
 
                 <div class="card__textarea-wrap">
-                  <p class="card__text">Example default task with default color.</p>
+                  <p class="card__text">${description}</p>
                 </div>
 
                 <div class="card__settings">
@@ -32,7 +33,7 @@ export const getCardTemplate = () => {
                     <div class="card__dates">
                       <div class="card__date-deadline">
                         <p class="card__input-deadline-wrap">
-                          <span class="card__date">23 September</span>
+                          <span class="card__date">${new Date(dueDate).toDateString()}</span>
                           <span class="card__time">11:15 PM</span>
                         </p>
                       </div>
@@ -42,7 +43,7 @@ export const getCardTemplate = () => {
                       <div class="card__hashtag-list">
                         <span class="card__hashtag-inner">
                           <span class="card__hashtag-name">
-                            #todo
+                            #${Array.from(tags).map(tag => `${tag}`).join(` `)}
                           </span>
                         </span>
 

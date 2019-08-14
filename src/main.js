@@ -6,9 +6,21 @@ import {getCardEditFormTemplate} from './components/card-edit';
 import {getCardTemplate} from './components/card';
 import {getLoadMoreButtonTemplate} from "./components/load-button";
 
-//This is renders function component
-const renderComponent = (container, layout) => {
-  container.insertAdjacentHTML('beforeend', layout);
+import {data} from "./data";
+
+const onLoadCards = () => {
+  if (data.length > boardTasksContainer.childElementCount) {
+    renderCards(data.slice(boardTasksContainer.childElementCount));
+    if (boardTasksContainer.childElementCount === data.length) {
+      loadButton.classList.add('visually-hidden');
+    }
+  } else {
+    loadButton.classList.add('visually-hidden');
+  }
+}
+
+const renderComponent = (container, layout, position = `beforeend`) => {
+  container.insertAdjacentHTML(position, layout);
 }
 
 const mainContainer = document.querySelector('.main');
@@ -19,14 +31,19 @@ renderComponent(mainContainer, getSearchTemplate());
 renderComponent(mainContainer, getFiltersTemplate());
 renderComponent(mainContainer, getBoardContainer());
 
-const renderCards = () => {
-  const boardTasksContainer = mainContainer.querySelector('.board__tasks');
-  renderComponent(boardTasksContainer, getCardEditFormTemplate());
+const boardTasksContainer = mainContainer.querySelector('.board__tasks');
+renderComponent(boardTasksContainer, getLoadMoreButtonTemplate(), `afterend`);
+renderComponent(boardTasksContainer, getCardEditFormTemplate(data[0]));
 
-  for (let i = 0; i < 3; i++) {
-    renderComponent(boardTasksContainer, getCardTemplate());
-  }
-}
-renderCards();
+const loadButton = document.querySelector('.load-more');
+
+const renderCards = (data) => {
+    data.slice(0, 8).forEach(card => renderComponent(boardTasksContainer, getCardTemplate(card)));
+};
+
+loadButton.addEventListener('click', onLoadCards);
+
+
+renderCards(data);
 
 

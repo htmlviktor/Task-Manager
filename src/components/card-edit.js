@@ -1,5 +1,6 @@
-export const getCardEditFormTemplate = () => {
-  return `<article class="card card--edit card--yellow card--repeat">
+export const getCardEditFormTemplate = ({description, dueDate, tags, color, repeatingDays}) => {
+  return `<article class="card card--edit card--${color} ${Object.keys(repeatingDays)
+    .some(day => repeatingDays[day]) ? `card--repeat` : ``}>
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -26,7 +27,7 @@ export const getCardEditFormTemplate = () => {
                       class="card__text"
                       placeholder="Start typing your text here..."
                       name="text"
-                    >Here is a card with filled data</textarea>
+                    >${description}</textarea>
                   </label>
                 </div>
 
@@ -44,7 +45,7 @@ export const getCardEditFormTemplate = () => {
                             type="text"
                             placeholder=""
                             name="date"
-                            value="23 September 11:15 PM"
+                            value="${new Date(dueDate).toDateString()}"
                           />
                         </label>
                       </fieldset>
@@ -134,7 +135,8 @@ export const getCardEditFormTemplate = () => {
 
                     <div class="card__hashtag">
                       <div class="card__hashtag-list">
-                        <span class="card__hashtag-inner">
+                      ${Array.from(tags).map((name) => {
+                        return `<span class="card__hashtag-inner">
                           <input
                             type="hidden"
                             name="hashtag"
@@ -142,42 +144,14 @@ export const getCardEditFormTemplate = () => {
                             class="card__hashtag-hidden-input"
                           />
                           <p class="card__hashtag-name">
-                            #repeat
+                            #${name}
                           </p>
                           <button type="button" class="card__hashtag-delete">
                             delete
                           </button>
-                        </span>
-
-                        <span class="card__hashtag-inner">
-                          <input
-                            type="hidden"
-                            name="hashtag"
-                            value="repeat"
-                            class="card__hashtag-hidden-input"
-                          />
-                          <p class="card__hashtag-name">
-                            #cinema
-                          </p>
-                          <button type="button" class="card__hashtag-delete">
-                            delete
-                          </button>
-                        </span>
-
-                        <span class="card__hashtag-inner">
-                          <input
-                            type="hidden"
-                            name="hashtag"
-                            value="repeat"
-                            class="card__hashtag-hidden-input"
-                          />
-                          <p class="card__hashtag-name">
-                            #entertaiment
-                          </p>
-                          <button type="button" class="card__hashtag-delete">
-                            delete
-                          </button>
-                        </span>
+                        </span>`;
+                        }).join('')}
+                        
                       </div>
 
                       <label>
@@ -265,5 +239,5 @@ export const getCardEditFormTemplate = () => {
                 </div>
               </div>
             </form>
-          </article>`
+          </article>`.trim();
 };
