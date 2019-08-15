@@ -22,8 +22,8 @@ const makeTask = () => ({
     'keks',
   ]),
   color: ['black', 'yellow', 'blue', 'green', 'pink'][Math.floor(Math.random() * 4)],
-  isFavorite: false,
-  isArchive: false
+  isFavorite: Math.round(Math.random()) ? true : false,
+  isArchive: Math.round(Math.random()) ? true : false,
 });
 
 
@@ -37,6 +37,50 @@ const makeTasks = (count) => {
 }
 
 export const data = makeTasks(18);
+
+const filterTitles = [
+  `ALL`,
+  `OVERDUE`,
+  `TODAY`,
+  `FAVORITES`,
+  `REPEATING`,
+  `TAGS`,
+  `ARCHIVE`
+];
+
+const qtyCount = (name, tasks) => {
+  switch (name) {
+    case `ALL`:
+      return tasks.filter(task => task).length;
+    case `OVERDUE`:
+      return tasks.filter(task => new Date(task.dueDate).toDateString() > new Date().toDateString()).length;
+    case `TODAY`:
+      return tasks.filter(task => new Date(task.dueDate).toDateString() === new Date().toDateString()).length;
+    case `FAVORITES`:
+      return tasks.filter(task => task.isFavorite).length;
+    case `REPEATING`:
+      return tasks.filter((task) => {
+       return Object.keys(task.repeatingDays).some(it => task.repeatingDays[it])
+      }).length;
+    case `TAGS`:
+      return tasks.filter(task => task.tags.size > 0).length;
+    case `ARCHIVE`:
+      return tasks.filter(task => task.isArchive).length;
+    default: return tasks.length;
+  }
+};
+
+
+const makeTaskFilters = () => {
+  const arrayFilter = new Array();
+  filterTitles.forEach((title, index) => {
+    arrayFilter[index] = {
+      title,
+      count: qtyCount(title, data)
+    }
+  })
+  return arrayFilter;
+};
 
 
 
