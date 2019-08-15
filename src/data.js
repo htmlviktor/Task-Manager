@@ -82,5 +82,6 @@ const makeTaskFilters = () => {
   return arrayFilter;
 };
 
+export const dataFilters = makeTaskFilters();
 
 

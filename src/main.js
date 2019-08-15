@@ -6,7 +6,7 @@ import {getCardEditFormTemplate} from './components/card-edit';
 import {getCardTemplate} from './components/card';
 import {getLoadMoreButtonTemplate} from "./components/load-button";
 
-import {data} from "./data";
+import {data, dataFilters} from "./data";
 
 const onLoadCards = () => {
   if (data.length > boardTasksContainer.childElementCount) {
@@ -28,7 +28,7 @@ const mainControlContainer = mainContainer.querySelector('.main__control');
 
 renderComponent(mainControlContainer, getMenuTemplate());
 renderComponent(mainContainer, getSearchTemplate());
-renderComponent(mainContainer, getFiltersTemplate());
+renderComponent(mainContainer, getFiltersTemplate(dataFilters));
 renderComponent(mainContainer, getBoardContainer());
 
 const boardTasksContainer = mainContainer.querySelector('.board__tasks');
