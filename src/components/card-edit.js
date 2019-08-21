@@ -1,6 +1,30 @@
-export const getCardEditFormTemplate = ({description, dueDate, tags, color, repeatingDays}) => {
-  return `<article class="card card--edit card--${color} ${Object.keys(repeatingDays)
-    .some(day => repeatingDays[day]) ? `card--repeat` : ``}>
+import {createElement} from "../utils";
+
+export default class CardEdit {
+  constructor({description, dueDate, tags, color, repeatingDays}) {
+    this._description = description;
+    this._dueDate = new Date(dueDate);
+    this._tags = tags;
+    this._color = color;
+    this._repeatingDays = repeatingDays;
+
+    this._element = null;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return `<article class="card card--edit card--${this._color} ${Object.keys(this._repeatingDays)
+      .some((day) => this._repeatingDays[day]) ? `card--repeat` : ``}>
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -27,7 +51,7 @@ export const getCardEditFormTemplate = ({description, dueDate, tags, color, repe
                       class="card__text"
                       placeholder="Start typing your text here..."
                       name="text"
-                    >${description}</textarea>
+                    >${this._description}</textarea>
                   </label>
                 </div>
 
@@ -45,7 +69,7 @@ export const getCardEditFormTemplate = ({description, dueDate, tags, color, repe
                             type="text"
                             placeholder=""
                             name="date"
-                            value="${new Date(dueDate).toDateString()}"
+                            value="${new Date(this._dueDate).toDateString()}"
                           />
                         </label>
                       </fieldset>
@@ -135,8 +159,8 @@ export const getCardEditFormTemplate = ({description, dueDate, tags, color, repe
 
                     <div class="card__hashtag">
                       <div class="card__hashtag-list">
-                      ${Array.from(tags).map((name) => {
-                        return `<span class="card__hashtag-inner">
+                      ${Array.from(this._tags).map((name) => {
+      return `<span class="card__hashtag-inner">
                           <input
                             type="hidden"
                             name="hashtag"
@@ -150,7 +174,7 @@ export const getCardEditFormTemplate = ({description, dueDate, tags, color, repe
                             delete
                           </button>
                         </span>`;
-                        }).join('')}
+    }).join(``)}
                         
                       </div>
 
@@ -240,4 +264,5 @@ export const getCardEditFormTemplate = ({description, dueDate, tags, color, repe
               </div>
             </form>
           </article>`.trim();
-};
+  }
+}
