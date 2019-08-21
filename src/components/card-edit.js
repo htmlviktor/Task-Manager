@@ -9,20 +9,40 @@ export default class CardEdit {
     this._repeatingDays = repeatingDays;
 
     this._element = null;
+    this._onSave = null;
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
+  set callBack(cb) {
+    this._onSave = cb;
+  }
+
+  render() {
+    this._element = createElement(this.template);
+    this.bind();
     return this._element;
   }
 
-  removeElement() {
+  unRender() {
+    this.unbind();
     this._element = null;
   }
 
-  getTemplate() {
+  bind() {
+    this._element.querySelector(`.card__save`)
+      .addEventListener(`click`, () => {
+        this._onSave();
+      });
+  }
+
+  unbind() {
+    this._element = null;
+  }
+
+  get element() {
+    return this._element;
+  }
+
+  get template() {
     return `<article class="card card--edit card--${this._color} ${Object.keys(this._repeatingDays)
       .some((day) => this._repeatingDays[day]) ? `card--repeat` : ``}>
             <form class="card__form" method="get">
@@ -160,7 +180,7 @@ export default class CardEdit {
                     <div class="card__hashtag">
                       <div class="card__hashtag-list">
                       ${Array.from(this._tags).map((name) => {
-      return `<span class="card__hashtag-inner">
+    return `<span class="card__hashtag-inner">
                           <input
                             type="hidden"
                             name="hashtag"
@@ -174,7 +194,7 @@ export default class CardEdit {
                             delete
                           </button>
                         </span>`;
-    }).join(``)}
+  }).join(``)}
                         
                       </div>
 

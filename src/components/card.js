@@ -8,20 +8,42 @@ export default class Card {
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._element = null;
+    this._onEdit = null;
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
+
+  bind() {
+    this._element.querySelector(`.card__btn--edit`)
+      .addEventListener(`click`, () => {
+        this._onEdit();
+      });
+  }
+
+  unbind() {
+    this._element.querySelector(`.card__btn--edit`)
+      .removeEventListener(`click`, this._onEdit);
+  }
+
+  set callBack(cb) {
+    this._onEdit = cb;
+  }
+
+  get element() {
     return this._element;
   }
 
-  removeElement() {
+  render() {
+    this._element = createElement(this.template);
+    this.bind();
+    return this._element;
+  }
+
+  unRender() {
+    this.unbind();
     this._element = null;
   }
 
-  getTemplate() {
+  get template() {
     return `<article class="card card--${this._color} ${Object.keys(this._repeatingDays)
       .some((day) => this._repeatingDays[day]) ? `card--repeat` : ``}">
             <div class="card__form">

@@ -58,15 +58,20 @@ const renderCards = (data) => {
   data.slice(0, 8).forEach((cardData) => {
     const Task = new Card(cardData);
     const TaskEdit = new CardEdit(cardData);
-    Task.getElement().querySelector(`.card__btn--edit`)
-      .addEventListener(`click`, () => {
-        boardTasksContainer.replaceChild(TaskEdit.getElement(), Task.getElement());
-      });
-    TaskEdit.getElement().querySelector(`.card__save`)
-      .addEventListener(`click`, () => {
-        boardTasksContainer.replaceChild(Task.getElement(), TaskEdit.getElement());
-      })
-    renderTemplate(boardTasksContainer, Task.getElement(), Position.AFTER);
+
+    renderTemplate(boardTasksContainer, Task.render(), Position.AFTER);
+
+    Task.callBack = () => {
+      TaskEdit.render();
+      boardTasksContainer.replaceChild(TaskEdit.element, Task.element);
+      Task.unRender();
+    };
+    TaskEdit.callBack = () => {
+      Task.render();
+      boardTasksContainer.replaceChild(Task.element, TaskEdit.element)
+      TaskEdit.unRender();
+    };
+
   });
 };
 
