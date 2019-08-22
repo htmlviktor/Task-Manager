@@ -9,11 +9,33 @@ export default class CardEdit {
     this._repeatingDays = repeatingDays;
 
     this._element = null;
-    this._onSave = null;
+    this._onSubmit = null;
+    this._onClose = null;
+
+    this._state = {
+      areaFocus: false
+    };
+
+    this._onCloseButtonClick = this._onCloseButtonClick.bind(this);
+    this._onSubmitButton = this._onSubmitButton.bind(this);
   }
 
-  set callBack(cb) {
-    this._onSave = cb;
+  _onSubmitButton() {
+    typeof this._onSubmit === `function` && this._onSubmit();
+  }
+
+  _onCloseButtonClick(evt) {
+    if (evt.key === `Escape` && !this._state.areaFocus) {
+      typeof this._onClose === `function` && this._onClose();
+    }
+  }
+
+  set onClose(cb) {
+    this._onClose = cb;
+  }
+
+  set onSubmit(cb) {
+    this._onSubmit = cb;
   }
 
   render() {
@@ -27,15 +49,27 @@ export default class CardEdit {
     this._element = null;
   }
 
+  _onFocus() {
+    this._state.areaFocus = true;
+  }
+  _onBlur() {
+    this._state.areaFocus = false;
+  }
+
   bind() {
+    this._element.querySelector(`.card__text`)
+      .addEventListener(`focus`, this._onFocus.bind(this));
+    this._element.querySelector(`.card__text`)
+      .addEventListener(`blur`, this._onBlur.bind(this));
     this._element.querySelector(`.card__save`)
-      .addEventListener(`click`, () => {
-        this._onSave();
-      });
+      .addEventListener(`click`, this._onSubmitButton);
+    document.addEventListener(`keydown`, this._onCloseButtonClick);
   }
 
   unbind() {
-    this._element = null;
+    this._element.querySelector(`.card__save`)
+      .removeEventListener(`click`, this._onSubmitButton);
+    document.removeEventListener(`keydown`, this._onCloseButtonClick);
   }
 
   get element() {

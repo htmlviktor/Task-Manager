@@ -11,20 +11,22 @@ export default class Card {
     this._onEdit = null;
   }
 
+  _onEditCheckout() {
+    typeof this._onEdit === `function` && this._onEdit();
+  }
+
 
   bind() {
     this._element.querySelector(`.card__btn--edit`)
-      .addEventListener(`click`, () => {
-        this._onEdit();
-      });
+      .addEventListener(`click`, this._onEditCheckout.bind(this));
   }
 
   unbind() {
     this._element.querySelector(`.card__btn--edit`)
-      .removeEventListener(`click`, this._onEdit);
+      .removeEventListener(`click`, this._onEditCheckout);
   }
 
-  set callBack(cb) {
+  set onEdit(cb) {
     this._onEdit = cb;
   }
 

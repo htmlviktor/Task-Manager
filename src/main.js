@@ -4,6 +4,7 @@ import {getFiltersTemplate} from './components/filter';
 import {getBoardContainer} from './components/board-container';
 import {getLoadMoreButtonTemplate} from "./components/load-button";
 
+import NoTasks from "./components/no-tasks";
 import Card from './components/card';
 import CardEdit from "./components/card-edit";
 
@@ -55,20 +56,29 @@ const renderTemplate = (container, element, position) => {
 };
 
 const renderCards = (data) => {
+  if (data.length === 0) {
+    renderComponent(boardTasksContainer, NoTasks());
+    loadButton.classList.add(`visually-hidden`);
+  }
   data.slice(0, 8).forEach((cardData) => {
     const Task = new Card(cardData);
     const TaskEdit = new CardEdit(cardData);
 
     renderTemplate(boardTasksContainer, Task.render(), Position.AFTER);
 
-    Task.callBack = () => {
+    Task.onEdit = () => {
       TaskEdit.render();
       boardTasksContainer.replaceChild(TaskEdit.element, Task.element);
       Task.unRender();
     };
-    TaskEdit.callBack = () => {
+    TaskEdit.onSubmit = () => {
       Task.render();
-      boardTasksContainer.replaceChild(Task.element, TaskEdit.element)
+      boardTasksContainer.replaceChild(Task.element, TaskEdit.element);
+      TaskEdit.unRender();
+    };
+    TaskEdit.onClose = () => {
+      Task.render();
+      boardTasksContainer.replaceChild(Task.element, TaskEdit.element);
       TaskEdit.unRender();
     };
 
