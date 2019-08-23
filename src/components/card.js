@@ -1,51 +1,16 @@
-import {createElement} from '../utils';
+import AbstractComponent from "./abstract-component";
 
-export default class Card {
+export default class Card extends AbstractComponent {
   constructor({color, tags, repeatingDays, description, dueDate}) {
+    super();
     this._color = color;
     this._tags = tags;
     this._repeatingDays = repeatingDays;
     this._description = description;
     this._dueDate = new Date(dueDate);
-    this._element = null;
-    this._onEdit = null;
   }
 
-  _onEditCheckout() {
-    typeof this._onEdit === `function` && this._onEdit();
-  }
-
-
-  bind() {
-    this._element.querySelector(`.card__btn--edit`)
-      .addEventListener(`click`, this._onEditCheckout.bind(this));
-  }
-
-  unbind() {
-    this._element.querySelector(`.card__btn--edit`)
-      .removeEventListener(`click`, this._onEditCheckout);
-  }
-
-  set onEdit(cb) {
-    this._onEdit = cb;
-  }
-
-  get element() {
-    return this._element;
-  }
-
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
-  unRender() {
-    this.unbind();
-    this._element = null;
-  }
-
-  get template() {
+  getTemplate() {
     return `<article class="card card--${this._color} ${Object.keys(this._repeatingDays)
       .some((day) => this._repeatingDays[day]) ? `card--repeat` : ``}">
             <div class="card__form">

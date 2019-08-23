@@ -64,23 +64,7 @@ const renderCards = (data) => {
     const Task = new Card(cardData);
     const TaskEdit = new CardEdit(cardData);
 
-    renderTemplate(boardTasksContainer, Task.render(), Position.AFTER);
-
-    Task.onEdit = () => {
-      TaskEdit.render();
-      boardTasksContainer.replaceChild(TaskEdit.element, Task.element);
-      Task.unRender();
-    };
-    TaskEdit.onSubmit = () => {
-      Task.render();
-      boardTasksContainer.replaceChild(Task.element, TaskEdit.element);
-      TaskEdit.unRender();
-    };
-    TaskEdit.onClose = () => {
-      Task.render();
-      boardTasksContainer.replaceChild(Task.element, TaskEdit.element);
-      TaskEdit.unRender();
-    };
+    renderTemplate(boardTasksContainer, Task.getElement(), Position.AFTER);
 
   });
 };

@@ -1,82 +1,20 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-export default class CardEdit {
+export default class CardEdit extends AbstractComponent{
   constructor({description, dueDate, tags, color, repeatingDays}) {
+    super();
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
     this._repeatingDays = repeatingDays;
 
-    this._element = null;
-    this._onSubmit = null;
-    this._onClose = null;
-
     this._state = {
       areaFocus: false
     };
-
-    this._onCloseButtonClick = this._onCloseButtonClick.bind(this);
-    this._onSubmitButton = this._onSubmitButton.bind(this);
   }
 
-  _onSubmitButton() {
-    typeof this._onSubmit === `function` && this._onSubmit();
-  }
-
-  _onCloseButtonClick(evt) {
-    if (evt.key === `Escape` && !this._state.areaFocus) {
-      typeof this._onClose === `function` && this._onClose();
-    }
-  }
-
-  set onClose(cb) {
-    this._onClose = cb;
-  }
-
-  set onSubmit(cb) {
-    this._onSubmit = cb;
-  }
-
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
-  unRender() {
-    this.unbind();
-    this._element = null;
-  }
-
-  _onFocus() {
-    this._state.areaFocus = true;
-  }
-  _onBlur() {
-    this._state.areaFocus = false;
-  }
-
-  bind() {
-    this._element.querySelector(`.card__text`)
-      .addEventListener(`focus`, this._onFocus.bind(this));
-    this._element.querySelector(`.card__text`)
-      .addEventListener(`blur`, this._onBlur.bind(this));
-    this._element.querySelector(`.card__save`)
-      .addEventListener(`click`, this._onSubmitButton);
-    document.addEventListener(`keydown`, this._onCloseButtonClick);
-  }
-
-  unbind() {
-    this._element.querySelector(`.card__save`)
-      .removeEventListener(`click`, this._onSubmitButton);
-    document.removeEventListener(`keydown`, this._onCloseButtonClick);
-  }
-
-  get element() {
-    return this._element;
-  }
-
-  get template() {
+  getTemplate() {
     return `<article class="card card--edit card--${this._color} ${Object.keys(this._repeatingDays)
       .some((day) => this._repeatingDays[day]) ? `card--repeat` : ``}>
             <form class="card__form" method="get">

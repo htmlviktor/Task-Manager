@@ -14,5 +14,5 @@ export const getFiltersTemplate = (filters) => {
   }).join(``)}
         
         
-      </section>`
+      </section>`;
 };

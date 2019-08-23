@@ -4,5 +4,5 @@ export const getBoardContainer = () => {
         </div>
         <div class="board__tasks">          
         </div>
-      </section>`
+      </section>`;
 };
