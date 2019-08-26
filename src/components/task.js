@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-export default class Card extends AbstractComponent {
+export default class Task extends AbstractComponent {
   constructor({color, tags, repeatingDays, description, dueDate}) {
     super();
     this._color = color;
@@ -78,5 +78,4 @@ export default class Card extends AbstractComponent {
             </div>
           </article>`;
   }
-}
-
+};

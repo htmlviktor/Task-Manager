@@ -27,7 +27,7 @@ const makeTask = () => ({
 });
 
 
-export const data = new Array(15).fill(``).map(makeTask);
+export const data = new Array(16).fill(``).map(makeTask);
 
 
 const filterTitles = [

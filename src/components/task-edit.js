@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-export default class CardEdit extends AbstractComponent{
+export default class TaskEdit extends AbstractComponent{
   constructor({description, dueDate, tags, color, repeatingDays}) {
     super();
     this._description = description;
